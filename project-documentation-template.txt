@@ -1,0 +1,45 @@
+PROJECT DOCUMENTATION TEMPLATE
+Subject: Networking Issues in Mobile Systems
+Part 1 – Conceptual Design
+Project Topic: Mobile Currency Exchange System (or an alternative topic approved by the instructor)
+1. General Information
+Project Name
+Project Authors
+Field of Study
+Year / Semester
+Supervisor
+Submission Date
+2. Project Description
+2.1. Project Objective
+A short description of the application's goal, main functionality, and the system's user value.Example: The aim of the project is to create a mobile application that enables virtual currency exchange, including real-time currency rate browsing and buy/sell transactions, using the National Bank of Poland API.
+2.2. Project Scope
+Description of the system modules and their roles (e.g., mobile application, Web Service, database).
+3. System Requirements
+3.1. Functional Requirements
+A table presenting all system functions:
+ID || Function Name || Description || Priority
+F1 || User registration || The user can create an account || High
+
+
+3.2. Non-Functional Requirements
+Description of system quality requirements:
+ID	|| Name	|| Description	|| Category
+N1	|| Performance	|| System response time ≤ 2 s	|| Performance
+
+4. UML Diagrams
+4.1. Use Case Diagram
+Insert a diagram showing interactions between the user and the system.
+4.2. Class Diagram
+Present the logical structure of the system – main classes, attributes, relationships.
+5. Database Design
+ERD (Entity-Relationship Diagram), description of tables and relationships, primary and foreign keys, data types.
+6. System Architecture
+Description of the interconnections between the application modules and the logical data flow diagram.
+7. Project Implementation Plan
+Stage || Description || Deadline || Responsible Person
+1 || Requirements analysis || || 
+
+8. Conclusions and Possible Extensions
+Description of potential additional functionalities or improvements that may be added after completing the project.
+9. Sources
+List of references and materials used in the project (e.g., NBP API documentation, technology documentation, literature).

@@ -1,0 +1,59 @@
+
+Project Topic: Mobile Currency Exchange System
+1. Project Objective
+The goal of the project is to design and implement a mobile system that enables users to perform basic currency exchange operations. The project aims to practically apply concepts related to communication between a mobile application, a web service (SOAP/REST), and a database, as well as integration with an external API (National Bank of Poland).
+2. Project Scope
+A. Mobile Application
+• User registration and login
+• Account funding (simulated virtual transfer)
+• Viewing current currency exchange rates (retrieved from the NBP API)
+• Access to historical exchange rates
+• Execution of buy/sell currency transactions
+• Viewing transaction history and current balance
+B. Web Service (SOAP or REST)
+• Implementation of business logic for the exchange office
+• Integration with NBP API to obtain exchange rates
+• Handling communication with the mobile application
+• Data validation and user authorization
+C. Database
+• Storing user information• Recording transactions
+• Saving users’ currency wallet balances
+3. Project Stages
+Part 1 – Conceptual Design (Analysis and Design Phase)
+• Development of functional and non-functional requirements
+• Preparation of a use case diagram (UML)
+• Preparation of a class diagram (for both the mobile app and web service)
+• Designing the database model (ERD diagram)Deliverables: PDF report + diagram files
+Part 2 – Implementation (Programming Phase)
+• Implementation of the mobile app in any language/framework (e.g., Kotlin, Flutter, React Native)
+• Implementation of the Web Service (e.g., Java Spring Boot, Node.js, .NET Core)
+• Implementation of the database (e.g., MySQL, PostgreSQL, SQLite)
+• Integration of all components
+• Preparation of a short user manualFinal Evaluation: Project presentation + live demonstration
+4. Grading Criteria
+
+Criterion || Weight	|| Description
+Application functionality ||	30%	||The system works according to specifications, with correct communication between the service and database
+Technical design quality (Part 1) || 20% || Completeness and correctness of UML diagrams, clear database design
+System architecture and integration ||	20% ||Proper layering, correct API implementation and authorization
+User interface and usability ||	10% || Clear, intuitive mobile interface
+Technical documentation and presentation	10% || Clear description of operation, startup instructions, presentation
+Additional features / creativity ||	10% || Extra modules such as rate alerts, graphs, multi-language support, offline mode
+
+
+
+
+Final Grade:
+5.0 – Complete project, meets all requirements, includes extra features
+4.5 – Complete project, minor issues or missing extras
+4.0 – Meets basic requirements, correct architecture
+3.5 – Functional, but limited integration or logical issues
+3.0 – Minimal functionality, missing parts of documentation
+2.0 – Project not functional or not submitted
+
+
+5. Technical Requirements
+• The application should run on Android (or cross-platform)
+• Communication with the server via HTTP/HTTPS
+• Local or remote database• Source code available in a Git repository (GitHub, GitLab)
+• Final report and project presentation required
