@@ -10,9 +10,16 @@ import SwiftData
 
 @main
 struct NCMAD_CurrencyProjectApp: App {
+    @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var walletViewModel = WalletViewModel()
+    @StateObject private var exchangeViewModel = ExchangeViewModel()
+    @StateObject private var nbpService = NBPService.shared
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            User.self,
+            CurrencyWallet.self,
+            Transaction.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,8 +32,28 @@ struct NCMAD_CurrencyProjectApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(authViewModel)
+                .environmentObject(walletViewModel)
+                .environmentObject(exchangeViewModel)
+                .environmentObject(nbpService)
+                .onAppear {
+                    authViewModel.setModelContext(sharedModelContainer.mainContext)
+                    walletViewModel.setModelContext(sharedModelContainer.mainContext)
+                }
         }
         .modelContainer(sharedModelContainer)
+    }
+}
+
+struct RootView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
+    var body: some View {
+        if authViewModel.isAuthenticated {
+            DashboardView()
+        } else {
+            LoginView()
+        }
     }
 }
