@@ -35,9 +35,9 @@ struct CurrencyCard: View {
             
             Spacer()
             
-            // Balance in USD or main currency
+            // Balance in wallet currency
             VStack(alignment: .trailing, spacing: 4) {
-                Text("$\(wallet.balanceString)")
+                Text("\(currencySymbol)\(wallet.balanceString)")
                     .font(.headline)
                     .foregroundColor(.black)
                 
@@ -74,6 +74,18 @@ struct CurrencyCard: View {
         case "CHF": return .red
         case "JPY": return .pink
         default: return .gray
+        }
+    }
+    
+    private var currencySymbol: String {
+        switch wallet.currencyCode {
+        case "PLN": return "zł"
+        case "USD": return "$"
+        case "EUR": return "€"
+        case "GBP": return "£"
+        case "CHF": return "CHF"
+        case "JPY": return "¥"
+        default: return ""
         }
     }
 }

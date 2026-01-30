@@ -12,7 +12,11 @@ struct ExchangeView: View {
     @EnvironmentObject var walletViewModel: WalletViewModel
     @EnvironmentObject var nbpService: NBPService
     
-    let availableCurrencies = ["PLN", "USD", "EUR", "GBP", "CHF", "JPY"]
+    var availableCurrencies: [String] {
+        var currencies = ["PLN"]
+        currencies.append(contentsOf: nbpService.currentRates.map { $0.code }.sorted())
+        return currencies
+    }
     
     var body: some View {
         NavigationStack {

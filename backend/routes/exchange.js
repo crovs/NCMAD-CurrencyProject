@@ -39,17 +39,16 @@ router.post('/', authenticateToken, (req, res) => {
         } = req.body;
 
         // Verify user is executing their own exchange
-        if (req.user.userId !== userId) {
+        if (req.user.userId.toLowerCase() !== userId.toLowerCase()) {
             return res.status(403).json({ error: 'Forbidden' });
         }
 
-        // Validation
-        if (!fromAmount || fromAmount <= 0 || !toAmount || toAmount <= 0) {
-            return res.status(400).json({ error: 'Invalid amounts' });
-        }
+        // Normalize userId for database
+        const normalizedUserId = userId.toLowerCase();
 
-        if (!fromCurrency || !toCurrency) {
-            return res.status(400).json({ error: 'Currency codes required' });
+        // Validation
+        if (!fromCurrency || !toCurrency || !fromAmount || fromAmount <= 0) {
+            return res.status(400).json({ error: 'Invalid exchange parameters' });
         }
 
         if (!['buy', 'sell'].includes(transactionType)) {
@@ -58,21 +57,25 @@ router.post('/', authenticateToken, (req, res) => {
 
         // Use transaction for atomicity
         const result = db.transaction(() => {
-            // Check if user has sufficient balance
-            const fromWallet = walletQueries.findByUserAndCurrency.get(userId, fromCurrency);
+            // Check if source wallet exists and has sufficient balance
+            const sourceWallet = walletQueries.findByUserAndCurrency.get(normalizedUserId, fromCurrency);
 
-            if (!fromWallet || fromWallet.balance < fromAmount) {
+            if (!sourceWallet) {
+                throw new Error('Source wallet not found');
+            }
+
+            if (sourceWallet.balance < fromAmount) {
                 throw new Error('Insufficient balance');
             }
 
             // Deduct from source currency
-            walletQueries.decrementBalance.run(fromAmount, userId, fromCurrency);
+            walletQueries.decrementBalance.run(fromAmount, normalizedUserId, fromCurrency);
 
             // Add to destination currency
-            const toWallet = walletQueries.findByUserAndCurrency.get(userId, toCurrency);
+            const toWallet = walletQueries.findByUserAndCurrency.get(normalizedUserId, toCurrency);
 
             if (toWallet) {
-                walletQueries.incrementBalance.run(toAmount, userId, toCurrency);
+                walletQueries.incrementBalance.run(toAmount, normalizedUserId, toCurrency);
             } else {
                 // Create new wallet for destination currency
                 const walletId = uuidv4();
@@ -87,7 +90,7 @@ router.post('/', authenticateToken, (req, res) => {
 
                 walletQueries.create.run(
                     walletId,
-                    userId,
+                    normalizedUserId,
                     toCurrency,
                     currencyNames[toCurrency] || toCurrency,
                     toAmount
@@ -98,7 +101,7 @@ router.post('/', authenticateToken, (req, res) => {
             const transactionId = uuidv4();
             transactionQueries.create.run(
                 transactionId,
-                userId,
+                normalizedUserId,
                 fromCurrency,
                 toCurrency,
                 fromAmount,
@@ -132,11 +135,12 @@ router.get('/history/:userId', authenticateToken, (req, res) => {
         const { userId } = req.params;
 
         // Verify user is requesting their own history
-        if (req.user.userId !== userId) {
+        if (req.user.userId.toLowerCase() !== userId.toLowerCase()) {
             return res.status(403).json({ error: 'Forbidden' });
         }
 
-        const transactions = transactionQueries.findAllByUser.all(userId);
+        const normalizedUserId = userId.toLowerCase();
+        const transactions = transactionQueries.findAllByUser.all(normalizedUserId);
         res.json(transactions);
     } catch (error) {
         console.error('Get history error:', error);

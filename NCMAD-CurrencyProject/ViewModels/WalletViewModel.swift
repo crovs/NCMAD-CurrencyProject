@@ -21,6 +21,15 @@ class WalletViewModel: ObservableObject {
     var modelContext: ModelContext? // Made public for ExchangeViewModel setup
     private var userId: UUID?
     
+    var formattedTotalBalance: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        let number = NSDecimalNumber(decimal: totalBalancePLN)
+        return "\(formatter.string(from: number) ?? "0.00") PLN"
+    }
+    
     func setModelContext(_ context: ModelContext) {
         self.modelContext = context
     }
@@ -47,30 +56,50 @@ class WalletViewModel: ObservableObject {
     }
     
     func fundAccount(amount: Decimal, currency: String = "PLN") async {
-        guard let userId = userId else { return }
+        print("🔷 fundAccount called: \(amount) \(currency)")
+        print("🔷 userId: \(String(describing: userId))")
+        
+        guard let userId = userId else {
+            print("❌ No userId set!")
+            errorMessage = "User not logged in"
+            return
+        }
         
         isLoading = true
         errorMessage = nil
         
         do {
+            print("📡 Calling backend API...")
             // Call backend API
             try await apiService.fundAccount(
                 userId: userId.uuidString,
                 amount: Double(truncating: amount as NSDecimalNumber),
                 currency: currency
             )
+            print("✅ Backend API call successful")
             
             // Update local wallet
+            print("💾 Updating local wallet...")
             updateWalletBalance(currency: currency, amount: amount)
+            print("✅ Wallet balance updated")
             
             // Create transaction record
+            print("📝 Creating transaction record...")
             createFundTransaction(amount: amount, currency: currency)
+            print("✅ Transaction created")
+            
+            // Reload wallets to refresh UI
+            print("🔄 Reloading wallets...")
+            loadWallets()
+            print("✅ Wallets reloaded. Count: \(wallets.count)")
             
         } catch {
+            print("❌ Error funding account: \(error)")
             errorMessage = error.localizedDescription
         }
         
         isLoading = false
+        print("🔷 fundAccount completed")
     }
     
     func updateWalletBalance(currency: String, amount: Decimal) {

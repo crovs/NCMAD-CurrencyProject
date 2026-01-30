@@ -13,6 +13,15 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Request logging middleware
+app.use((req, res, next) => {
+    console.log(`📨 ${req.method} ${req.path}`);
+    if (req.body && Object.keys(req.body).length > 0) {
+        console.log('   Body:', JSON.stringify(req.body, null, 2));
+    }
+    next();
+});
 app.use(express.urlencoded({ extended: true }));
 
 // Request logging
@@ -28,6 +37,13 @@ initializeDatabase();
 app.use('/api/auth', authRoutes);
 app.use('/api/wallet', walletRoutes);
 app.use('/api/exchange', exchangeRoutes);
+
+// Admin routes (for database viewer)
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
+
+// Serve static files (for database viewer)
+app.use(express.static('public'));
 
 // Health check
 app.get('/api/health', (req, res) => {

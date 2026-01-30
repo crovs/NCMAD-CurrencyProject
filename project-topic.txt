@@ -16,7 +16,8 @@ B. Web Service (SOAP or REST)
 • Handling communication with the mobile application
 • Data validation and user authorization
 C. Database
-• Storing user information• Recording transactions
+• Storing user information
+• Recording transactions
 • Saving users’ currency wallet balances
 3. Project Stages
 Part 1 – Conceptual Design (Analysis and Design Phase)
