@@ -50,10 +50,15 @@ struct RootView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
-        if authViewModel.isAuthenticated {
-            DashboardView()
-        } else {
-            LoginView()
+        Group {
+            if authViewModel.isAuthenticated {
+                DashboardView()
+            } else {
+                LoginView()
+            }
+        }
+        .onAppear {
+            authViewModel.checkAuthState()
         }
     }
 }

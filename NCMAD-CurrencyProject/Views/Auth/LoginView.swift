@@ -142,12 +142,8 @@ struct CustomTextField: View {
                 .foregroundColor(.white.opacity(0.7))
                 .frame(width: 20)
             
-            TextField(placeholder, text: $text)
+            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(.white.opacity(0.5)))
                 .foregroundColor(.white)
-                .placeholder(when: text.isEmpty) {
-                    Text(placeholder)
-                        .foregroundColor(.white.opacity(0.5))
-                }
         }
         .padding()
         .background(Color.white.opacity(0.1))
@@ -167,30 +163,12 @@ struct CustomSecureField: View {
                 .foregroundColor(.white.opacity(0.7))
                 .frame(width: 20)
             
-            SecureField(placeholder, text: $text)
+            SecureField("", text: $text, prompt: Text(placeholder).foregroundColor(.white.opacity(0.5)))
                 .foregroundColor(.white)
-                .placeholder(when: text.isEmpty) {
-                    Text(placeholder)
-                        .foregroundColor(.white.opacity(0.5))
-                }
         }
         .padding()
         .background(Color.white.opacity(0.1))
         .cornerRadius(12)
-    }
-}
-
-// MARK: - Extensions
-extension View {
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content
-    ) -> some View {
-        ZStack(alignment: alignment) {
-            placeholder().opacity(shouldShow ? 1 : 0)
-            self
-        }
     }
 }
 
