@@ -121,6 +121,7 @@ class AuthViewModel: ObservableObject {
     
     func logout() {
         authService.clearAuth()
+        apiService.clearToken()
         currentUser = nil
         isAuthenticated = false
     }

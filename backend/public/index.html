@@ -176,7 +176,7 @@
     <div class="container">
         <header>
             <h1>💰 Currency Exchange Database</h1>
-            <p>Live View - Teacher Demonstration</p>
+            <p>Live View</p>
             <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
         </header>
         
@@ -315,7 +315,7 @@
                         ${transactions.map(tx => `
                             <tr>
                                 <td>${tx.user_email}</td>
-                                <td><span class="badge badge-${tx.type}">${tx.type.toUpperCase()}</span></td>
+                                <td><span class="badge badge-${tx.type || 'unknown'}">${(tx.type || 'unknown').toUpperCase()}</span></td>
                                 <td>${tx.from_currency} → ${tx.to_currency}</td>
                                 <td>${tx.from_amount.toFixed(2)} → ${tx.to_amount.toFixed(2)}</td>
                                 <td>${tx.exchange_rate.toFixed(4)}</td>

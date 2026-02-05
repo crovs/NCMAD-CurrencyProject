@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum APIError: Error {
+enum APIError: LocalizedError {
     case invalidURL
     case networkError(Error)
     case invalidResponse
@@ -16,7 +16,7 @@ enum APIError: Error {
     case unauthorized
     case serverError(String)
     
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .invalidURL:
             return "Invalid URL"
@@ -98,7 +98,12 @@ class APIService: ObservableObject {
         
         let request = RegisterRequest(email: email, password: password, name: name)
         
-        return try await performRequest(url: url, method: "POST", body: request)
+        let response: AuthResponse = try await performRequest(url: url, method: "POST", body: request)
+        
+        // Store auth token
+        self.authToken = response.token
+        
+        return response
     }
     
     func login(email: String, password: String) async throws -> AuthResponse {
@@ -117,6 +122,10 @@ class APIService: ObservableObject {
         self.authToken = response.token
         
         return response
+    }
+    
+    func clearToken() {
+        self.authToken = nil
     }
     
     // MARK: - Wallet Operations

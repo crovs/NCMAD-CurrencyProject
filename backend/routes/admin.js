@@ -26,7 +26,15 @@ router.get('/database', (req, res) => {
         // Get all transactions with user emails
         const transactions = db.prepare(`
             SELECT 
-                t.*,
+                t.id,
+                t.user_id,
+                t.from_currency,
+                t.to_currency,
+                t.from_amount,
+                t.to_amount,
+                t.exchange_rate,
+                t.transaction_type as type,
+                t.timestamp,
                 u.email as user_email
             FROM transactions t
             JOIN users u ON t.user_id = u.id

@@ -40,6 +40,12 @@ struct DashboardView: View {
                     Label("History", systemImage: "clock.fill")
                 }
                 .tag(3)
+            
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape.fill")
+                }
+                .tag(4)
         }
         .tint(Color(hex: "00d4ff"))
         .onAppear {
